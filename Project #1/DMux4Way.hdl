@@ -1,0 +1,33 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/1/DMux4Way.hdl
+/**
+ * 4-way demultiplexor:
+ * [a, b, c, d] = [in, 0, 0, 0] if sel = 00
+ *                [0, in, 0, 0] if sel = 01
+ *                [0, 0, in, 0] if sel = 10
+ *                [0, 0, 0, in] if sel = 11
+ */
+CHIP DMux4Way {
+    IN in, sel[2];
+    OUT a, b, c, d;
+
+    PARTS:
+    // Two-layers arcitecture
+    // First layer contains 1 Dmux gate to split the input accross 2 groups
+    // Second layer contains 2 Dmux gate for deciding output from each group
+
+    // First layer:
+    // Splitting input
+
+    DMux(in=in , sel=sel[1] , a=AB , b=CD );
+
+    // Second layer:
+    // Decides inside each group 
+
+    DMux(in=AB , sel=sel[0] , a=a , b=b );
+    DMux(in=CD , sel=sel[0] , a=c , b=d );
+
+    
+}
