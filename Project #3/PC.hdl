@@ -14,5 +14,12 @@ CHIP PC {
     OUT out[16];
     
     PARTS:
-    //// Replace this comment with your code.
+    // The API of the chip follows reset -> load -> inc 
+    // Giving the reset pin higher priority
+    // to do this I'm gonna reverse the flow and start from right to left.
+    Inc16(in=t, out=incremented);
+    Mux16(a=t, b=incremented, sel=inc, out=incout);
+    Mux16(a=incout, b=in, sel=load, out=loadout);
+    Mux16(a=loadout, b=false, sel=reset, out=nextval);
+    Register(in=nextval, load=true, out=out, out=t);
 }
